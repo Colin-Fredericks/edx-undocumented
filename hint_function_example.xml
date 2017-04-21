@@ -1,0 +1,64 @@
+<problem>
+
+<script type="loncapa/python">
+<![CDATA[
+def test_str(expect, ans):
+  print expect, ans
+  ans = ans.strip("'")
+  ans = ans.strip('"')
+
+  ans = float(ans)
+  expect = float(expect)
+  if abs(ans-expect) < 2:
+    return True
+  elif abs(ans-expect) < 6:
+    return "Partial"
+  else:
+    return False
+ 
+def hint_fn(answer_ids, student_answers, new_cmap, old_cmap):
+  aid = answer_ids[0]
+  ans = str(student_answers[aid])
+  print 'hint_fn called, ans=', ans
+  hint = ''
+  if float(ans) <= 88:
+    hint = 'Much too low.'
+    newgrade = 0.2
+  elif float(ans) <= 92:
+    hint = 'Too low.'
+    newgrade = 0.5
+  elif float(ans) >= 100:
+    hint = 'Much too high.'
+    newgrade = 0.2
+  elif float(ans) >= 96:
+    hint = 'Too high.'
+    newgrade = 0.5
+  else:
+    hint = 'Exact answer: 94%'
+    newgrade = 1
+  if hint:
+    hint = "<span style='color:blue;'>Hint: {0}</span>".format(hint) 
+    new_cmap.set_hint_and_mode(aid,hint,'always')
+    new_cmap.set_property(aid,'npoints',newgrade)
+    if newgrade < 0.9:
+      new_cmap.set_property(aid, 'correctness', "partially-correct")
+    elif newgrade < 0.1:
+      new_cmap.set_property(aid, 'correctness', 'incorrect')
+]]>
+</script> 
+<p>
+What is the efficiency of the US power grid? That is, what percentage of the electrical power generated at power plants actually makes it to end users?  
+</p>
+<customresponse cfn="test_str" expect="94">
+<formulaequationinput correct_answer="94" trailing_text="%" />
+<hintgroup hintfn="hint_fn"/>
+</customresponse>
+
+  <solution>
+<div class="detailed-solution">
+<p>Explanation</p>
+  <p>According to (insert source here), the US electrical grid is 94% efficient.</p>
+</div>
+</solution>
+
+</problem>
